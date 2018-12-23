@@ -5,15 +5,17 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>9173e1ea-3ab2-49ac-8b5f-9233f0cc9dae</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>GoatDefense.Core</RootNamespace>
-    <AssemblyName>GoatDefense.Core</AssemblyName>
-    <UseStandardResourceNames>true</UseStandardResourceNames>
+    <ProjectGuid>29d5623f-2976-4b9e-ad94-3103b7b0cb0e</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>GoatDefense.View</RootNamespace>
+    <AssemblyName>GoatDefense.View</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <TargetFSharpCoreVersion>4.4.1.0</TargetFSharpCoreVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Name>GoatDefense.Core</Name>
+    <UseStandardResourceNames>true</UseStandardResourceNames>
+    <TargetFSharpCoreVersion>4.4.1.0</TargetFSharpCoreVersion>
+    <Name>GoatDefense.View</Name>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,7 +25,9 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>bin\$(Configuration)\$(AssemblyName).XML</DocumentationFile>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,7 +36,9 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>bin\$(Configuration)\$(AssemblyName).XML</DocumentationFile>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
@@ -51,20 +57,23 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
-    <Compile Include="Helper\Helper.fs" />
-    <Compile Include="Helper\Math.fs" />
-    <Compile Include="Helper\Maybe.fs" />
-    <Compile Include="Helper\Alias.fs" />
-    <Compile Include="Helper\Cmd.fs" />
-    <Compile Include="Helper\Manager.fs" />
-    <Compile Include="Model\Actor.fs" />
-    <Compile Include="Model\Model.fs" />
-    <Compile Include="Message\Message.fs" />
-    <Compile Include="Update\Update.fs" />
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="UIElement\IHasMsg.fs" />
+    <Compile Include="UIElement\Button.fs" />
+    <Compile Include="UIElement\Mouse.fs" />
+    <Compile Include="Game\GameConfig.fs" />
+    <Compile Include="Game\GameUILayer.fs" />
+    <Compile Include="Game\ActorView.fs" />
+    <Compile Include="Game\ActorManagerComponent.fs" />
+    <Compile Include="Game\GameScene.fs" />
+    <Compile Include="Program.fs" />
+    <None Include="App.config" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Altseed">
+      <HintPath>..\packages\AltseedDotNet.1.1.5.3\lib\net45\Altseed.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core">
       <Name>FSharp.Core</Name>
@@ -79,6 +88,20 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GoatDefense.Core\GoatDefense.Core.fsproj">
+      <Name>GoatDefense.Core</Name>
+      <Project>{9173e1ea-3ab2-49ac-8b5f-9233f0cc9dae}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\packages\AltseedDotNet.1.1.5.3\build\net45\AltseedDotNet.targets" Condition="Exists('..\packages\AltseedDotNet.1.1.5.3\build\net45\AltseedDotNet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\AltseedDotNet.1.1.5.3\build\net45\AltseedDotNet.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\AltseedDotNet.1.1.5.3\build\net45\AltseedDotNet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
